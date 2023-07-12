@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "cPDqgmv8m22/N16EINHWM0CtTuECWoqQhElaCpVZ2MmKZ6TPrwdvGWQEwvQcoMx8Zb7HFevO90vM2QLyujsHRA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Obaida\\Desktop\\Projects\\ObaidaAl_NaheelTask_001\\ObaidaAl_NaheelTask_001.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Obaida\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\Obaida\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\Obaida\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\Obaida\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\Obaida\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\Obaida\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
