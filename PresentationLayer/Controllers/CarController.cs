@@ -1,9 +1,3 @@
-using AutoMapper;
-using BussinessLayer;
-using DTO;
-using Microsoft.AspNetCore.Mvc;
-using Models;
-
 namespace Controllers;
 [ApiController]
 [Route("api/[controller]")]

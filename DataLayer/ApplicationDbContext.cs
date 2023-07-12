@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Models;
-
-namespace DataLayer;
+﻿namespace DataLayer;
 public class ApplicationDbContext : DbContext 
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}

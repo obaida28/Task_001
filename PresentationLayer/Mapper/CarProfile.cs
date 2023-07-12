@@ -1,7 +1,3 @@
-using AutoMapper;
-using DTO;
-using Models;
-
 namespace Mapper;
 public class CarProfile : Profile
 {

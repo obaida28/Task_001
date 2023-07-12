@@ -1,5 +1,3 @@
-using Models;
-
 namespace BussinessLayer;
 public interface ICarService
 {

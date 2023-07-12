@@ -1,5 +1,3 @@
-using Models;
-
 namespace Repositories;
 public interface ICarRepository
 {

@@ -1,7 +1,3 @@
-using Microsoft.Extensions.Caching.Memory;
-using Models;
-using Repositories;
-
 namespace BussinessLayer;
 public class CarService : ICarService
 {

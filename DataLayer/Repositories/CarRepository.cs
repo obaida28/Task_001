@@ -1,6 +1,3 @@
-using DataLayer;
-using Models;
-
 namespace Repositories;
 public class CarRepository : ICarRepository
 {

@@ -1,8 +1,3 @@
-using BussinessLayer;
-using DataLayer;
-using Microsoft.EntityFrameworkCore;
-using Repositories;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
