@@ -6,6 +6,7 @@ using Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddMemoryCache();
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddAutoMapper(typeof(Program));

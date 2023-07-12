@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Memory;
 using Models;
 using Repositories;
 
@@ -5,8 +6,12 @@ namespace BussinessLayer;
 public class CarService : ICarService
 {
     private readonly ICarRepository _repository;
-    public CarService(ICarRepository repository) => _repository = repository;
-    
+    private readonly IMemoryCache _cache;
+    public CarService(ICarRepository repository , IMemoryCache cache)
+    {
+        _repository = repository;
+        _cache = cache;
+    }
     public IEnumerable<Car> GetCars() => _repository.GetCars();
     public Car GetCarById(string numCar) => _repository.GetCarById(numCar);
     public void AddCar(Car car) => _repository.AddCar(car);
@@ -46,5 +51,15 @@ public class CarService : ICarService
             default :
                 return cars.Where(c => c.CarNumber == value.ToString());
         }
+    }
+    public IEnumerable<Car> GetCarsByCache()
+    {
+        var cacheKey = "cars";
+        if (!_cache.TryGetValue(cacheKey, out IEnumerable<Car> cars))
+        {
+            cars = GetCars();
+            _cache.Set(cacheKey, cars, TimeSpan.FromHours(1));
+        }
+        return cars;
     }
 }

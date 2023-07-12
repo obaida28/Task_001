@@ -25,6 +25,14 @@ public class CarController : ControllerBase
         return cars;
     }
     
+    [HttpGet(template : "AllByCache")]
+    public IEnumerable<object> GetByCache() 
+    {
+        var allCars = _service.GetCarsByCache();
+        var cars = _map.Map<List<CarView>>(allCars);
+        return cars;
+    } 
+    
     [HttpGet(template : "Paging")]
     public IEnumerable<object> Paging(int pageNumber = 1 , int pageSize = 10) 
     {

@@ -11,5 +11,5 @@ public interface ICarService
     Car GetCarById(string numCar);
     IEnumerable<Car> GetCarsBy(string colName , bool desc = false);
     IEnumerable<Car> SearchBy(string colName , string value);
-
+    IEnumerable<Car> GetCarsByCache();
 }
