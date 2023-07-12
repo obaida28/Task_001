@@ -1,0 +1,26 @@
+Emenu Backend Quiz
+
+The main goal of the task is to show your skills in the best way possible.
+
+1- Assume we have this scenario:
+"A car rental company wants to build an information system to automate its core business, 
+this information system needs a database that includes the data of the company's cars, where each car has a unique car number, type, 
+engine capacity, color, and daily fare, with or without a driver, where a driver can replace another in driving one of the cars in his absence,
+ and the customer can rent more than one car, with or without a driver, according to the type of car."
+Use Entity Framework code-first approach to create tables in SQL database.
+2- Implement N-Tier Architecture and Repository Pattern
+3- Create multiple endpoints only for Car entity to do CRUD Operation Using Entity Framework Core.
+4- Paging, Searching, and Sorting
+5- For performance purposes, implement Cache in-memory or distributed to cache cars and create endpoint to get cars from the cache.
+
+
+Instructions:
+ • Try to keep your design and code as simple as possible. 
+ • if you have Q please reply to this mail with your Q. 
+ • When you finish the challenge, please upload your code to a git repository and send the link back to us as reply to this mail,  make sure it's public. 
+ • Include the steps to run the project. 
+ • We think it's an easy task, so we are expecting you to hear from your back in 3 days. 
+ 
+GOOD LUCK
+
+Eng.Bushra Albasha

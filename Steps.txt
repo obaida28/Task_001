@@ -1,0 +1,7 @@
+Steps to run the project. 
+
+1- Add the connection string in appSettings file.
+2- Update database (in CLI : dotnet ef database update )
+3- Run the app (in CLI : dotnet run)
+ 
+Obaida Al-Naheel
