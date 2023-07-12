@@ -23,8 +23,33 @@ public class CarController : ControllerBase
         var allCars = _service.GetCars();
         var cars = _map.Map<List<CarView>>(allCars);
         return cars;
+    }
+    
+    [HttpGet(template : "Paging")]
+    public IEnumerable<object> Paging(int pageNumber = 1 , int pageSize = 10) 
+    {
+        int skip = pageSize * (pageNumber - 1);
+        var allCars = _service.GetCars().Skip(skip).Take(pageSize);
+        var cars = _map.Map<List<CarView>>(allCars);
+        return cars;
     } 
-  
+    
+    [HttpGet(template : "Sorting")]
+    public IEnumerable<object> Sorting(string colName ,  bool Desc = false) 
+    {
+        var resCars = _service.GetCarsBy(colName , Desc);
+        var cars = _map.Map<List<CarView>>(resCars);
+        return cars;
+    }
+
+    [HttpGet(template : "Searching")]
+    public IEnumerable<object> Searching(string colName ,  string value)
+    {
+        var resCars = _service.SearchBy(colName , value);
+        var cars = _map.Map<List<CarView>>(resCars);
+        return cars;
+    }   
+
     [HttpGet("{id}")]
     public object Get(string id) 
     {

@@ -21,4 +21,6 @@ public class ApplicationDbContext : DbContext
     public virtual DbSet<Car> Cars {get; set;}
     public virtual DbSet<Customer> Customers { get; set; }
     public virtual DbSet<Driver> Drivers { get; set; }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => 
+        optionsBuilder.UseLazyLoadingProxies();
 }
