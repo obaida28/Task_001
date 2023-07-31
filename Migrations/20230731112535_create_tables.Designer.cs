@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ObaidaAl_NaheelTask_001.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230731060853_create_tables")]
+    [Migration("20230731112535_create_tables")]
     partial class create_tables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,11 +50,9 @@ namespace ObaidaAl_NaheelTask_001.Migrations
 
             modelBuilder.Entity("Models.Customer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
@@ -67,155 +65,140 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("a11746f0-6fd3-423c-bde5-8c5a7fc37682"),
                             CustomerName = "Customer1"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("8c361a5c-47bc-4180-bebf-d632dc1578d0"),
                             CustomerName = "Customer2"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("821f079c-56d7-4622-88cc-32e6f4245b31"),
                             CustomerName = "Customer3"
                         });
                 });
 
-            modelBuilder.Entity("Models.CustomerCar", b =>
-                {
-                    b.Property<string>("CarNumber")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CarNumber", "CustomerId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("CustomerCars");
-                });
-
             modelBuilder.Entity("Models.Driver", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DriverName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("substitDriverId")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("SubstitDriverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("substitDriverId")
+                    b.HasIndex("SubstitDriverId")
                         .IsUnique()
-                        .HasFilter("[substitDriverId] IS NOT NULL");
+                        .HasFilter("[SubstitDriverId] IS NOT NULL");
 
                     b.ToTable("Drivers");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            DriverName = "driver1"
+                            Id = new Guid("457c23e0-52fc-4657-8568-cd98b3b25c84"),
+                            DriverName = "driver1",
+                            IsAvailable = false
                         },
                         new
                         {
-                            Id = 2,
-                            DriverName = "driver2"
+                            Id = new Guid("1ed297d6-4d66-4b04-ab6b-5a4468506044"),
+                            DriverName = "driver2",
+                            IsAvailable = false
                         },
                         new
                         {
-                            Id = 3,
-                            DriverName = "driver3"
+                            Id = new Guid("6b87a8a7-5622-401b-ac01-91bfca9de089"),
+                            DriverName = "driver3",
+                            IsAvailable = false
                         });
                 });
 
-            modelBuilder.Entity("Models.DriverCar", b =>
+            modelBuilder.Entity("Models.Rental", b =>
                 {
                     b.Property<string>("CarNumber")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("DriverId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("CarNumber", "DriverId");
+                    b.Property<Guid?>("DriverId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("CarNumber", "CustomerId");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("DriverId");
 
-                    b.ToTable("DriverCars");
+                    b.ToTable("Rentals");
                 });
 
-            modelBuilder.Entity("Models.CustomerCar", b =>
+            modelBuilder.Entity("Models.Driver", b =>
+                {
+                    b.HasOne("Models.Driver", "Substitute")
+                        .WithOne()
+                        .HasForeignKey("Models.Driver", "SubstitDriverId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Substitute");
+                });
+
+            modelBuilder.Entity("Models.Rental", b =>
                 {
                     b.HasOne("Models.Car", "Car")
-                        .WithMany("CustomerCars")
+                        .WithMany("Rentals")
                         .HasForeignKey("CarNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Models.Customer", "Customer")
-                        .WithMany("CustomerCars")
+                        .WithMany("Rentals")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Models.Driver", "Driver")
+                        .WithMany("Rentals")
+                        .HasForeignKey("DriverId");
+
                     b.Navigation("Car");
 
                     b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("Models.Driver", b =>
-                {
-                    b.HasOne("Models.Driver", "substitute")
-                        .WithOne()
-                        .HasForeignKey("Models.Driver", "substitDriverId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("substitute");
-                });
-
-            modelBuilder.Entity("Models.DriverCar", b =>
-                {
-                    b.HasOne("Models.Car", "Car")
-                        .WithMany("DriverCars")
-                        .HasForeignKey("CarNumber")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Driver", "Driver")
-                        .WithMany("DriverCars")
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
 
                     b.Navigation("Driver");
                 });
 
             modelBuilder.Entity("Models.Car", b =>
                 {
-                    b.Navigation("CustomerCars");
-
-                    b.Navigation("DriverCars");
+                    b.Navigation("Rentals");
                 });
 
             modelBuilder.Entity("Models.Customer", b =>
                 {
-                    b.Navigation("CustomerCars");
+                    b.Navigation("Rentals");
                 });
 
             modelBuilder.Entity("Models.Driver", b =>
                 {
-                    b.Navigation("DriverCars");
+                    b.Navigation("Rentals");
                 });
 #pragma warning restore 612, 618
         }

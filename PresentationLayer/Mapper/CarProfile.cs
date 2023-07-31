@@ -7,8 +7,8 @@ public class CarProfile : Profile
         .ForMember(
             dest => dest.Rentals  ,opt => opt.MapFrom(src => 
                 new List<Rental> { 
-                    new Rental { CustomerId = (int)src.CustomerId , 
-                    DriverId = (int)src.DriverId , CarNumber = src.CarNumber} }
+                    new Rental { CustomerId = (Guid)src.CustomerId , 
+                    DriverId = src.DriverId , CarNumber = src.CarNumber} }
             ));
 
          CreateMap<Car, CarView>()
@@ -18,7 +18,7 @@ public class CarProfile : Profile
     private IEnumerable<string> getDrivers(Car list)
     {
         if(list.Rentals.Any())
-            return list.Rentals.Select(a => a.Driver.DriverName);
+            return list.Rentals.Where(r => r.Driver.IsAvailable).Select(a => a.Driver.DriverName);
         IEnumerable<string> res = new[] { "No Driver" };
         return res;
     }

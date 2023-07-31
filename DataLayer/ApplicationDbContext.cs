@@ -20,7 +20,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Rental>()
             .HasOne(r => r.Driver)
             .WithMany(d => d.Rentals)
-            .HasForeignKey(r => r.CarNumber);
+            .HasForeignKey(r => r.DriverId);
 
         modelBuilder.Entity<Driver>()
             .HasOne(d => d.Substitute)
