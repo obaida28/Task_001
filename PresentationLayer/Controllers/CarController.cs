@@ -27,30 +27,13 @@ public class CarController : ControllerBase
         return cars;
     } 
     
-    [HttpGet(template : "Paging")]
-    public IEnumerable<object> Paging(int pageNumber = 1 , int pageSize = 10) 
+    [HttpGet(template : "CarFilter")]
+    public IEnumerable<CarView> getList(CarFilter dto) 
     {
-        int skip = pageSize * (pageNumber - 1);
-        var allCars = _service.GetCars().Skip(skip).Take(pageSize);
-        var cars = _map.Map<List<CarView>>(allCars);
+        var all = _service.getfilter(dto);
+        var cars = _map.Map<List<CarView>>(all);
         return cars;
     } 
-    
-    [HttpGet(template : "Sorting")]
-    public IEnumerable<object> Sorting(string colName ,  bool Desc = false) 
-    {
-        var resCars = _service.GetCarsBy(colName , Desc);
-        var cars = _map.Map<List<CarView>>(resCars);
-        return cars;
-    }
-
-    [HttpGet(template : "Searching")]
-    public IEnumerable<object> Searching(string colName ,  string value)
-    {
-        var resCars = _service.SearchBy(colName , value);
-        var cars = _map.Map<List<CarView>>(resCars);
-        return cars;
-    }   
 
     [HttpGet("{id}")]
     public object Get(string id) 

@@ -7,7 +7,6 @@ public interface ICarService
     void DeleteCar(string CarNumber);
     IEnumerable<Car> GetCars();
     Car GetCarById(string numCar);
-    IEnumerable<Car> GetCarsBy(string colName , bool desc = false);
-    IEnumerable<Car> SearchBy(string colName , string value);
+    List<Car> getfilter(CarFilter dto);
     IEnumerable<Car> GetCarsByCache();
 }

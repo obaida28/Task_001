@@ -14,9 +14,26 @@ public class CarService : ICarService
     public bool IsExist(string numCar) => _repository.IsExist(numCar);
     public void UpdateCar(Car car) => _repository.UpdateCar(car);
     public void DeleteCar(string CarNumber) => _repository.DeleteCar(CarNumber);
-    public IEnumerable<Car> GetCarsBy(string colName , bool desc = false)
+    public List<Car> getfilter(CarFilter dto)
     {
-        var cars = GetCars();
+        IQueryable<Car> all = _repository.GetCars();
+        if(dto.WithPaging)
+            all = Paging(all , dto.pageNumber , dto.pageSize);
+        if(dto.WithSearching && dto.colNameSearch is not null && dto.valueSearch is not null)
+            all = Searching(all , dto.colNameSearch , dto.valueSearch);
+        if(dto.WithSorting && dto.colNameSort is not null)
+            all = Sorting(all , dto.colNameSort , dto.Desc ?? false);
+        return all.ToList();
+    }
+    private IQueryable<Car> Paging(IQueryable<Car> cars , int? pageNumber , int? pageSize)
+    {
+        int pgSize = (int)(pageNumber ?? 10);
+        int pgNum = (int)(pageSize ?? 1);
+        int skip = pgSize * (pgNum - 1);
+        return cars.Skip(skip).Take(pgNum);   
+    }
+    private IQueryable<Car> Sorting(IQueryable<Car> cars , string colName , bool desc = false)
+    {
         switch(colName)
         {
             case "Type" : 
@@ -31,21 +48,20 @@ public class CarService : ICarService
                 return desc ? cars.OrderByDescending(c => c.CarNumber) : cars.OrderBy(c => c.CarNumber);
         }
     }
-    public IEnumerable<Car> SearchBy(string colName , string value)
+    private IQueryable<Car> Searching(IQueryable<Car> cars , string colName , string value)
     {
-        var cars = GetCars();
         switch(colName)
         {
             case "Type" : 
-                return cars.Where(c => c.Type == value.ToString());
+                return cars.Where(c => c.Type.Contains(value.ToString()));
             case "Color" : 
-                return cars.Where(c => c.Color == value.ToString());
+                return cars.Where(c => c.Color.Contains(value.ToString()));
             case "EngineCapacity" : 
                 return cars.Where(c => c.EngineCapacity == Convert.ToDecimal(value));
             case "DailyRate" : 
                 return cars.Where(c => c.DailyRate == Convert.ToInt32(value));
             default :
-                return cars.Where(c => c.CarNumber == value.ToString());
+                return cars.Where(c => c.CarNumber.Contains(value.ToString()));
         }
     }
     public IEnumerable<Car> GetCarsByCache()
