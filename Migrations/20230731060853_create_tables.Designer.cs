@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ObaidaAl_NaheelTask_001.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230712105246_create_tables")]
+    [Migration("20230731060853_create_tables")]
     partial class create_tables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,13 +33,7 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DailyRate")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DriverId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("EngineCapacity")
@@ -50,10 +44,6 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CarNumber");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("DriverId");
 
                     b.ToTable("Cars");
                 });
@@ -92,6 +82,21 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Models.CustomerCar", b =>
+                {
+                    b.Property<string>("CarNumber")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarNumber", "CustomerId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("CustomerCars");
+                });
+
             modelBuilder.Entity("Models.Driver", b =>
                 {
                     b.Property<int>("Id")
@@ -104,7 +109,14 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("substitDriverId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("substitDriverId")
+                        .IsUnique()
+                        .HasFilter("[substitDriverId] IS NOT NULL");
 
                     b.ToTable("Drivers");
 
@@ -126,19 +138,84 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Models.Car", b =>
+            modelBuilder.Entity("Models.DriverCar", b =>
                 {
-                    b.HasOne("Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId");
+                    b.Property<string>("CarNumber")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasOne("Models.Driver", "Driver")
-                        .WithMany()
-                        .HasForeignKey("DriverId");
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarNumber", "DriverId");
+
+                    b.HasIndex("DriverId");
+
+                    b.ToTable("DriverCars");
+                });
+
+            modelBuilder.Entity("Models.CustomerCar", b =>
+                {
+                    b.HasOne("Models.Car", "Car")
+                        .WithMany("CustomerCars")
+                        .HasForeignKey("CarNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Customer", "Customer")
+                        .WithMany("CustomerCars")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Models.Driver", b =>
+                {
+                    b.HasOne("Models.Driver", "substitute")
+                        .WithOne()
+                        .HasForeignKey("Models.Driver", "substitDriverId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("substitute");
+                });
+
+            modelBuilder.Entity("Models.DriverCar", b =>
+                {
+                    b.HasOne("Models.Car", "Car")
+                        .WithMany("DriverCars")
+                        .HasForeignKey("CarNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Driver", "Driver")
+                        .WithMany("DriverCars")
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
 
                     b.Navigation("Driver");
+                });
+
+            modelBuilder.Entity("Models.Car", b =>
+                {
+                    b.Navigation("CustomerCars");
+
+                    b.Navigation("DriverCars");
+                });
+
+            modelBuilder.Entity("Models.Customer", b =>
+                {
+                    b.Navigation("CustomerCars");
+                });
+
+            modelBuilder.Entity("Models.Driver", b =>
+                {
+                    b.Navigation("DriverCars");
                 });
 #pragma warning restore 612, 618
         }

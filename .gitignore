@@ -80,3 +80,7 @@ obj/Debug/net6.0/ObaidaAl_NaheelTask_001.GeneratedMSBuildEditorConfig.editorconf
 obj/Debug/net6.0/ObaidaAl_NaheelTask_001.assets.cache
 obj/Debug/net6.0/ObaidaAl_NaheelTask_001.csproj.AssemblyReference.cache
 obj/Debug/net6.0/ObaidaAl_NaheelTask_001.GeneratedMSBuildEditorConfig.editorconfig
+bin/Debug/net6.0/AutoMapper.dll
+bin/Debug/net6.0/Microsoft.EntityFrameworkCore.Proxies.dll
+bin/Debug/net6.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+bin/Debug/net6.0/Castle.Core.dll

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Q+8IMW4ta71ZAnOksVD6rTrOPuYpHdOXVVfiJKo48sD2l0WTPk5g0APFOjGTdDpTBJYByaH8DMwlQHwJXzYEgw==",
+  "dgSpecHash": "lq/EF5xeiyaXgBI7JwyF78BU6VeqLrrpDTaNXhnJepyJaEfXWRqPp+mB2v+yWqwfKwNmqc0MYf2BFpOaqMcjcg==",
   "success": true,
-  "projectFilePath": "c:\\Users\\Obaida\\Desktop\\Projects\\ObaidaAl_NaheelTask_001\\ObaidaAl_NaheelTask_001.csproj",
+  "projectFilePath": "C:\\Users\\Obaida\\Desktop\\Projects\\EMENU\\Task_001\\Task_001\\ObaidaAl_NaheelTask_001.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Obaida\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Obaida\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

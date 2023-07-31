@@ -7,8 +7,6 @@ public class Car
     public decimal EngineCapacity { get; set; }
     public string Color { get; set; }
     public int DailyRate { get; set; }
-    public int? DriverId { get; set; }
-    public virtual Driver? Driver { get; set; }
-    public int? CustomerId { get; set; }
-    public virtual Customer? Customer { get; set; }
+    public virtual ICollection<CustomerCar> CustomerCars { get; set; }
+    public virtual ICollection<DriverCar> DriverCars { get; set; }
 }
