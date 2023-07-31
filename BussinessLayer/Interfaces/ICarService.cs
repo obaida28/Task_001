@@ -5,7 +5,7 @@ public interface ICarService
     bool IsExist(string numCar);
     void UpdateCar(Car car);
     void DeleteCar(string CarNumber);
-    IEnumerable<Car> GetCars();
+    DbSet<Car> GetAllCars();
     Car GetCarById(string numCar);
     List<Car> getfilter(CarFilter dto);
     IEnumerable<Car> GetCarsByCache();

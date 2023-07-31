@@ -2,18 +2,31 @@ namespace BussinessLayer;
 public class CarService : ICarService
 {
     private readonly ICarRepository _repository;
-    private readonly IMemoryCache _cache;
-    public CarService(ICarRepository repository , IMemoryCache cache)
+    private readonly ICarCache _cache;
+    private readonly string CarCacheName = "cars";
+    public CarService(ICarRepository repository , ICarCache cache)
     {
         _repository = repository;
         _cache = cache;
     }
-    public IEnumerable<Car> GetCars() => _repository.GetCars();
+    public DbSet<Car> GetAllCars() => _repository.GetCars();
     public Car GetCarById(string numCar) => _repository.GetCarById(numCar);
-    public void AddCar(Car car) => _repository.AddCar(car);
+    public void AddCar(Car car)
+    {
+        _repository.AddCar(car);
+        _cache.AddToCache(car);
+    }
     public bool IsExist(string numCar) => _repository.IsExist(numCar);
-    public void UpdateCar(Car car) => _repository.UpdateCar(car);
-    public void DeleteCar(string CarNumber) => _repository.DeleteCar(CarNumber);
+    public void UpdateCar(Car car)
+    {
+        _repository.UpdateCar(car);
+        _cache.UpdateCache(car);
+    }
+    public void DeleteCar(string CarNumber) 
+    {
+        _repository.DeleteCar(CarNumber);
+        _cache.DeleteFromCache(CarNumber);
+    }     
     public List<Car> getfilter(CarFilter dto)
     {
         IQueryable<Car> all = _repository.GetCars();
@@ -64,14 +77,5 @@ public class CarService : ICarService
                 return cars.Where(c => c.CarNumber.Contains(value.ToString()));
         }
     }
-    public IEnumerable<Car> GetCarsByCache()
-    {
-        var cacheKey = "cars";
-        if (!_cache.TryGetValue(cacheKey, out IEnumerable<Car> cars))
-        {
-            cars = GetCars();
-            _cache.Set(cacheKey, cars, TimeSpan.FromHours(1));
-        }
-        return cars;
-    }
+    public IEnumerable<Car> GetCarsByCache() => _cache.getCars();
 }

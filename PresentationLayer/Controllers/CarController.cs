@@ -14,7 +14,7 @@ public class CarController : ControllerBase
     [HttpGet(template : "All")]
     public IEnumerable<object> Get() 
     {
-        var allCars = _service.GetCars();
+        var allCars = _service.GetAllCars();
         var cars = _map.Map<List<CarView>>(allCars);
         return cars;
     }

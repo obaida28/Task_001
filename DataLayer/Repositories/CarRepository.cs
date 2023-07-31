@@ -10,7 +10,7 @@ public class CarRepository : ICarRepository
         _context.SaveChanges();
     }
     public bool IsExist(string numCar) => GetCarById(numCar) != null;
-    public IQueryable<Car> GetCars() => _context.Cars;
+    public DbSet<Car> GetCars() => _context.Cars;
     public Car GetCarById(string numCar) => _context.Cars.Find(numCar);
     public void UpdateCar(Car car)
     {
