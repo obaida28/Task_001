@@ -13,7 +13,8 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                 name: "Cars",
                 columns: table => new
                 {
-                    CarNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CarNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EngineCapacity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -21,7 +22,7 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cars", x => x.CarNumber);
+                    table.PrimaryKey("PK_Cars", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,20 +61,21 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                 name: "Rentals",
                 columns: table => new
                 {
-                    CarNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CarId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rentals", x => new { x.CarNumber, x.CustomerId });
+                    table.PrimaryKey("PK_Rentals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rentals_Cars_CarNumber",
-                        column: x => x.CarNumber,
+                        name: "FK_Rentals_Cars_CarId",
+                        column: x => x.CarId,
                         principalTable: "Cars",
-                        principalColumn: "CarNumber",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Rentals_Customers_CustomerId",
@@ -85,7 +87,8 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                         name: "FK_Rentals_Drivers_DriverId",
                         column: x => x.DriverId,
                         principalTable: "Drivers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -93,9 +96,9 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                 columns: new[] { "Id", "CustomerName" },
                 values: new object[,]
                 {
-                    { new Guid("821f079c-56d7-4622-88cc-32e6f4245b31"), "Customer3" },
-                    { new Guid("8c361a5c-47bc-4180-bebf-d632dc1578d0"), "Customer2" },
-                    { new Guid("a11746f0-6fd3-423c-bde5-8c5a7fc37682"), "Customer1" }
+                    { new Guid("843cb4d9-45ff-432b-96b0-f8b27ae0b61a"), "Customer3" },
+                    { new Guid("d0d15006-36c4-4a6f-90ad-52b8a7e71497"), "Customer2" },
+                    { new Guid("ef0bfe54-04da-43bf-864e-64f8b0ed8076"), "Customer1" }
                 });
 
             migrationBuilder.InsertData(
@@ -103,9 +106,9 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                 columns: new[] { "Id", "DriverName", "IsAvailable", "SubstitDriverId" },
                 values: new object[,]
                 {
-                    { new Guid("1ed297d6-4d66-4b04-ab6b-5a4468506044"), "driver2", false, null },
-                    { new Guid("457c23e0-52fc-4657-8568-cd98b3b25c84"), "driver1", false, null },
-                    { new Guid("6b87a8a7-5622-401b-ac01-91bfca9de089"), "driver3", false, null }
+                    { new Guid("3f3e9c77-1d66-4c0b-bf1a-ab1591ab4140"), "driver2", false, null },
+                    { new Guid("58f3e5ec-7b13-4be7-b020-774f8ef4832e"), "driver1", false, null },
+                    { new Guid("f9213a9d-4a86-4db9-9857-94cd868fc7a5"), "driver3", false, null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -114,6 +117,11 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                 column: "SubstitDriverId",
                 unique: true,
                 filter: "[SubstitDriverId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rentals_CarId",
+                table: "Rentals",
+                column: "CarId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rentals_CustomerId",

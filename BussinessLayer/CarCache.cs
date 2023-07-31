@@ -4,49 +4,49 @@ public class CarCache : ICarCache
 {
     private readonly IMemoryCache _cache;
     private readonly ICarRepository _repository;
-    private readonly string CarCacheName = "cars";
+    private readonly string carCacheName = "cars";
     public CarCache(IMemoryCache cache , ICarRepository repository) 
     {
         _cache = cache;
         _repository = repository;
     }
-    public void AddToCache(Car car)
+    public void addToCache(Car car)
     {
         var cars = getCars();
         if (!cars.IsEmpty())
         {
             var list = cars.ToList();
             list.Add(car);
-            SetCache(list);
+            setCache(list);
         }
     }
-    public void UpdateCache(Car car)
+    public void updateCache(Car car)
     {
         var cars = getCars().ToList();
         if (!cars.IsEmpty())
         {
-            var oldCar = cars.Find(c => c.CarNumber == car.CarNumber);
+            var oldCar = cars.Find(c => c.Id == car.Id);
             cars.Remove(oldCar);
             cars.Add(car);
-            SetCache(cars);
+            setCache(cars);
         }
     }
-    public void DeleteFromCache(string CarNumber)
+    public void deleteFromCache(Guid id)
     {
         var cars = getCars().ToList();
         if (!cars.IsEmpty())
         {
-            var oldCar = cars.Find(c => c.CarNumber == CarNumber);
+            var oldCar = cars.Find(c => c.Id == id);
             cars.Remove(oldCar);
-            SetCache(cars);
+            setCache(cars);
         }
     }
     public IEnumerable<Car> getCars()
     {
-        if (_cache.TryGetValue(CarCacheName, out IEnumerable<Car> cars)) return cars;
-        var _cars = _repository.GetCars();
-        SetCache(_cars);
+        if (_cache.TryGetValue(carCacheName, out IEnumerable<Car> cars)) return cars;
+        var _cars = _repository.getCars();
+        setCache(_cars);
         return _cars;
     }
-    public void SetCache(IEnumerable<Car> cars) => _cache.Set(CarCacheName, cars, TimeSpan.FromHours(1));
+    public void setCache(IEnumerable<Car> cars) => _cache.Set(carCacheName, cars, TimeSpan.FromHours(1));
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ObaidaAl_NaheelTask_001.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230731112535_create_tables")]
+    [Migration("20230731120835_create_tables")]
     partial class create_tables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,8 +26,13 @@ namespace ObaidaAl_NaheelTask_001.Migrations
 
             modelBuilder.Entity("Models.Car", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("CarNumber")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")
                         .IsRequired()
@@ -43,7 +48,7 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CarNumber");
+                    b.HasKey("Id");
 
                     b.ToTable("Cars");
                 });
@@ -65,17 +70,17 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a11746f0-6fd3-423c-bde5-8c5a7fc37682"),
+                            Id = new Guid("ef0bfe54-04da-43bf-864e-64f8b0ed8076"),
                             CustomerName = "Customer1"
                         },
                         new
                         {
-                            Id = new Guid("8c361a5c-47bc-4180-bebf-d632dc1578d0"),
+                            Id = new Guid("d0d15006-36c4-4a6f-90ad-52b8a7e71497"),
                             CustomerName = "Customer2"
                         },
                         new
                         {
-                            Id = new Guid("821f079c-56d7-4622-88cc-32e6f4245b31"),
+                            Id = new Guid("843cb4d9-45ff-432b-96b0-f8b27ae0b61a"),
                             CustomerName = "Customer3"
                         });
                 });
@@ -107,19 +112,19 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("457c23e0-52fc-4657-8568-cd98b3b25c84"),
+                            Id = new Guid("58f3e5ec-7b13-4be7-b020-774f8ef4832e"),
                             DriverName = "driver1",
                             IsAvailable = false
                         },
                         new
                         {
-                            Id = new Guid("1ed297d6-4d66-4b04-ab6b-5a4468506044"),
+                            Id = new Guid("3f3e9c77-1d66-4c0b-bf1a-ab1591ab4140"),
                             DriverName = "driver2",
                             IsAvailable = false
                         },
                         new
                         {
-                            Id = new Guid("6b87a8a7-5622-401b-ac01-91bfca9de089"),
+                            Id = new Guid("f9213a9d-4a86-4db9-9857-94cd868fc7a5"),
                             DriverName = "driver3",
                             IsAvailable = false
                         });
@@ -127,13 +132,18 @@ namespace ObaidaAl_NaheelTask_001.Migrations
 
             modelBuilder.Entity("Models.Rental", b =>
                 {
-                    b.Property<string>("CarNumber")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CarId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("DriverId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("EndDate")
@@ -142,7 +152,9 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("CarNumber", "CustomerId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
 
                     b.HasIndex("CustomerId");
 
@@ -165,7 +177,7 @@ namespace ObaidaAl_NaheelTask_001.Migrations
                 {
                     b.HasOne("Models.Car", "Car")
                         .WithMany("Rentals")
-                        .HasForeignKey("CarNumber")
+                        .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -177,7 +189,9 @@ namespace ObaidaAl_NaheelTask_001.Migrations
 
                     b.HasOne("Models.Driver", "Driver")
                         .WithMany("Rentals")
-                        .HasForeignKey("DriverId");
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Car");
 

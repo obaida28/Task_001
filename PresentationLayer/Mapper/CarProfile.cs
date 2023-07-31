@@ -8,7 +8,7 @@ public class CarProfile : Profile
             dest => dest.Rentals  ,opt => opt.MapFrom(src => 
                 new List<Rental> { 
                     new Rental { CustomerId = (Guid)src.CustomerId , 
-                    DriverId = src.DriverId , CarNumber = src.CarNumber} }
+                    DriverId = src.DriverId , CarId = src.CarId} }
             ));
 
          CreateMap<Car, CarView>()

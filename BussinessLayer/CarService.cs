@@ -3,49 +3,48 @@ public class CarService : ICarService
 {
     private readonly ICarRepository _repository;
     private readonly ICarCache _cache;
-    private readonly string CarCacheName = "cars";
     public CarService(ICarRepository repository , ICarCache cache)
     {
         _repository = repository;
         _cache = cache;
     }
-    public DbSet<Car> GetAllCars() => _repository.GetCars();
-    public Car GetCarById(string numCar) => _repository.GetCarById(numCar);
-    public void AddCar(Car car)
+    public DbSet<Car> getAllCars() => _repository.getCars();
+    public Car getCarById(Guid id) => _repository.getCarById(id);
+    public void addCar(Car car)
     {
-        _repository.AddCar(car);
-        _cache.AddToCache(car);
+        _repository.addCar(car);
+        _cache.addToCache(car);
     }
-    public bool IsExist(string numCar) => _repository.IsExist(numCar);
-    public void UpdateCar(Car car)
+    public bool isExist(Guid id) => _repository.isExist(id);
+    public void updateCar(Car car)
     {
-        _repository.UpdateCar(car);
-        _cache.UpdateCache(car);
+        _repository.updateCar(car);
+        _cache.updateCache(car);
     }
-    public void DeleteCar(string CarNumber) 
+    public void deleteCar(Guid id) 
     {
-        _repository.DeleteCar(CarNumber);
-        _cache.DeleteFromCache(CarNumber);
+        _repository.deleteCar(id);
+        _cache.deleteFromCache(id);
     }     
     public List<Car> getfilter(CarFilter dto)
     {
-        IQueryable<Car> all = _repository.GetCars();
+        IQueryable<Car> all = _repository.getCars();
         if(dto.WithPaging)
-            all = Paging(all , dto.pageNumber , dto.pageSize);
+            all = paging(all , dto.pageNumber , dto.pageSize);
         if(dto.WithSearching && dto.colNameSearch is not null && dto.valueSearch is not null)
-            all = Searching(all , dto.colNameSearch , dto.valueSearch);
+            all = searching(all , dto.colNameSearch , dto.valueSearch);
         if(dto.WithSorting && dto.colNameSort is not null)
-            all = Sorting(all , dto.colNameSort , dto.Desc ?? false);
+            all = sorting(all , dto.colNameSort , dto.Desc ?? false);
         return all.ToList();
     }
-    private IQueryable<Car> Paging(IQueryable<Car> cars , int? pageNumber , int? pageSize)
+    private IQueryable<Car> paging(IQueryable<Car> cars , int? pageNumber , int? pageSize)
     {
         int pgSize = (int)(pageNumber ?? 10);
         int pgNum = (int)(pageSize ?? 1);
         int skip = pgSize * (pgNum - 1);
         return cars.Skip(skip).Take(pgNum);   
     }
-    private IQueryable<Car> Sorting(IQueryable<Car> cars , string colName , bool desc = false)
+    private IQueryable<Car> sorting(IQueryable<Car> cars , string colName , bool desc = false)
     {
         switch(colName)
         {
@@ -61,7 +60,7 @@ public class CarService : ICarService
                 return desc ? cars.OrderByDescending(c => c.CarNumber) : cars.OrderBy(c => c.CarNumber);
         }
     }
-    private IQueryable<Car> Searching(IQueryable<Car> cars , string colName , string value)
+    private IQueryable<Car> searching(IQueryable<Car> cars , string colName , string value)
     {
         switch(colName)
         {
@@ -77,5 +76,5 @@ public class CarService : ICarService
                 return cars.Where(c => c.CarNumber.Contains(value.ToString()));
         }
     }
-    public IEnumerable<Car> GetCarsByCache() => _cache.getCars();
+    public IEnumerable<Car> getCarsByCache() => _cache.getCars();
 }

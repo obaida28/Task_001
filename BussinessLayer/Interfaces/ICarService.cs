@@ -1,12 +1,12 @@
 namespace BussinessLayer;
 public interface ICarService
 {
-    void AddCar(Car car);
-    bool IsExist(string numCar);
-    void UpdateCar(Car car);
-    void DeleteCar(string CarNumber);
-    DbSet<Car> GetAllCars();
-    Car GetCarById(string numCar);
+    void addCar(Car car);
+    bool isExist(Guid id);
+    void updateCar(Car car);
+    void deleteCar(Guid id);
+    DbSet<Car> getAllCars();
+    Car getCarById(Guid id);
     List<Car> getfilter(CarFilter dto);
-    IEnumerable<Car> GetCarsByCache();
+    IEnumerable<Car> getCarsByCache();
 }

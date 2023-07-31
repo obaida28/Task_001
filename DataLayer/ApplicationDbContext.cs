@@ -4,13 +4,13 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Rental>()
-            .HasKey(r => new { r.CarNumber , r.CustomerId });
+        // modelBuilder.Entity<Rental>()
+        //     .HasKey(r => new { r.CarNumber , r.CustomerId });
 
         modelBuilder.Entity<Rental>()
             .HasOne(r => r.Car)
             .WithMany(c => c.Rentals)
-            .HasForeignKey(r => r.CarNumber);
+            .HasForeignKey(r => r.CarId);
 
         modelBuilder.Entity<Rental>()
             .HasOne(r => r.Customer)

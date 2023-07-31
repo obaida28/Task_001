@@ -14,7 +14,7 @@ public class CarController : ControllerBase
     [HttpGet(template : "All")]
     public IEnumerable<CarView> Get() 
     {
-        var allCars = _service.GetAllCars();
+        var allCars = _service.getAllCars();
         var cars = _map.Map<List<CarView>>(allCars);
         return cars;
     }
@@ -22,7 +22,7 @@ public class CarController : ControllerBase
     [HttpGet(template : "AllByCache")]
     public IEnumerable<CarView> GetByCache() 
     {
-        var allCars = _service.GetCarsByCache();
+        var allCars = _service.getCarsByCache();
         var cars = _map.Map<List<CarView>>(allCars);
         return cars;
     } 
@@ -36,9 +36,9 @@ public class CarController : ControllerBase
     } 
 
     [HttpGet("{id}")]
-    public CarView Get(string id) 
+    public CarView Get(Guid id) 
     {
-        var getCar = _service.GetCarById(id);
+        var getCar = _service.getCarById(id);
         var car = _map.Map<CarView>(getCar);
         return car;
     }
@@ -49,28 +49,28 @@ public class CarController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         Car car = _map.Map<Car>(carDTO);
-        if(_service.IsExist(carDTO.CarNumber))
+        if(_service.isExist(carDTO.CarId))
             return BadRequest("The car number is unique !");
-        _service.AddCar(car);
+        _service.addCar(car);
         return Ok(car);
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateCar(string id , CarDTO carDTO)
+    public IActionResult UpdateCar(Guid id , CarDTO carDTO)
     {
-        if (id != carDTO.CarNumber)
+        if (id != carDTO.CarId)
             return BadRequest();
         Car car = _map.Map<Car>(carDTO);
-        _service.UpdateCar(car);
+        _service.updateCar(car);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteCar(string id)
+    public IActionResult DeleteCar(Guid id)
     {
-        if (!_service.IsExist(id))
+        if (!_service.isExist(id))
             return NotFound();
-        _service.DeleteCar(id);
+        _service.deleteCar(id);
         return NoContent();
     }
 }

@@ -4,22 +4,22 @@ public class CarRepository : ICarRepository
     private readonly ApplicationDbContext _context;
 
     public CarRepository(ApplicationDbContext context) => _context = context;
-    public void AddCar(Car car)
+    public void addCar(Car car)
     {
         _context.Add(car);
         _context.SaveChanges();
     }
-    public bool IsExist(string numCar) => GetCarById(numCar) != null;
-    public DbSet<Car> GetCars() => _context.Cars;
-    public Car GetCarById(string numCar) => _context.Cars.Find(numCar);
-    public void UpdateCar(Car car)
+    public bool isExist(Guid id) => getCarById(id) != null;
+    public DbSet<Car> getCars() => _context.Cars;
+    public Car getCarById(Guid id) => _context.Cars.Find(id);
+    public void updateCar(Car car)
     {
         _context.Update(car);
         _context.SaveChanges();
     }
-    public void DeleteCar(string numCar)
+    public void deleteCar(Guid id)
     {
-        var car = GetCarById(numCar);
+        var car = getCarById(id);
         _context.Cars.Remove(car);
         _context.SaveChanges();
     }
