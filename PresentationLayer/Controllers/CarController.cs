@@ -12,7 +12,7 @@ public class CarController : ControllerBase
     } 
     
     [HttpGet(template : "All")]
-    public IEnumerable<object> Get() 
+    public IEnumerable<CarView> Get() 
     {
         var allCars = _service.GetAllCars();
         var cars = _map.Map<List<CarView>>(allCars);
@@ -20,7 +20,7 @@ public class CarController : ControllerBase
     }
     
     [HttpGet(template : "AllByCache")]
-    public IEnumerable<object> GetByCache() 
+    public IEnumerable<CarView> GetByCache() 
     {
         var allCars = _service.GetCarsByCache();
         var cars = _map.Map<List<CarView>>(allCars);
@@ -36,7 +36,7 @@ public class CarController : ControllerBase
     } 
 
     [HttpGet("{id}")]
-    public object Get(string id) 
+    public CarView Get(string id) 
     {
         var getCar = _service.GetCarById(id);
         var car = _map.Map<CarView>(getCar);
