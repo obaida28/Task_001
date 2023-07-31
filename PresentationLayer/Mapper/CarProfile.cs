@@ -5,14 +5,10 @@ public class CarProfile : Profile
     {
         CreateMap < CarDTO, Car > ()
         .ForMember(
-            dest => dest.CustomerCars  ,opt => opt.MapFrom(src => 
-                new List<CustomerCar> { 
-                        new CustomerCar { CustomerId = (int)src.CustomerId , CarNumber = src.CarNumber} }
-            ))
-        .ForMember(
-            dest => dest.DriverCars  ,opt => opt.MapFrom(src => 
-                new List<DriverCar> { 
-                        new DriverCar { DriverId = (int)src.DriverId , CarNumber = src.CarNumber} }
+            dest => dest.Rentals  ,opt => opt.MapFrom(src => 
+                new List<Rental> { 
+                    new Rental { CustomerId = (int)src.CustomerId , 
+                    DriverId = (int)src.DriverId , CarNumber = src.CarNumber} }
             ));
 
          CreateMap<Car, CarView>()
@@ -21,15 +17,15 @@ public class CarProfile : Profile
     }
     private IEnumerable<string> getDrivers(Car list)
     {
-        if(list.DriverCars.Any())
-            return list.DriverCars.Select(a => a.Driver.DriverName);
+        if(list.Rentals.Any())
+            return list.Rentals.Select(a => a.Driver.DriverName);
         IEnumerable<string> res = new[] { "No Driver" };
         return res;
     }
     private IEnumerable<string> getCustomers(Car list)
     {
-        if(list.CustomerCars.Any())
-            return list.CustomerCars.Select(a => a.Customer.CustomerName);
+        if(list.Rentals.Any())
+            return list.Rentals.Select(a => a.Customer.CustomerName);
         IEnumerable<string> res = new[] { "No Customer" };
         return res;
     }

@@ -4,54 +4,45 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<CustomerCar>()
-            .HasKey(cc => new { cc.CarNumber , cc.CustomerId });
+        modelBuilder.Entity<Rental>()
+            .HasKey(r => new { r.CarNumber , r.CustomerId });
 
-        modelBuilder.Entity<CustomerCar>()
-            .HasOne(cc => cc.Car)
-            .WithMany(cc => cc.CustomerCars)
-            .HasForeignKey(cc => cc.CarNumber);
+        modelBuilder.Entity<Rental>()
+            .HasOne(r => r.Car)
+            .WithMany(c => c.Rentals)
+            .HasForeignKey(r => r.CarNumber);
 
-        modelBuilder.Entity<CustomerCar>()
-            .HasOne(cc => cc.Customer)
-            .WithMany(c => c.CustomerCars)
-            .HasForeignKey(cc => cc.CustomerId);
+        modelBuilder.Entity<Rental>()
+            .HasOne(r => r.Customer)
+            .WithMany(c => c.Rentals)
+            .HasForeignKey(r => r.CustomerId);
 
-        modelBuilder.Entity<DriverCar>()
-            .HasKey(dc => new { dc.CarNumber, dc.DriverId });
-
-        modelBuilder.Entity<DriverCar>()
-            .HasOne(d => d.Car)
-            .WithMany(c => c.DriverCars)
-            .HasForeignKey(d => d.CarNumber);
-
-        modelBuilder.Entity<DriverCar>()
-            .HasOne(d => d.Driver)
-            .WithMany(c => c.DriverCars)
-            .HasForeignKey(d => d.DriverId);
+        modelBuilder.Entity<Rental>()
+            .HasOne(r => r.Driver)
+            .WithMany(d => d.Rentals)
+            .HasForeignKey(r => r.CarNumber);
 
         modelBuilder.Entity<Driver>()
-            .HasOne(d => d.substitute)
+            .HasOne(d => d.Substitute)
             .WithOne()
-            .HasForeignKey<Driver>(d => d.substitDriverId)
+            .HasForeignKey<Driver>(d => d.SubstitDriverId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Driver>().HasData(
-            new Driver { Id = 1 , DriverName = "driver1" } ,
-            new Driver { Id = 2 , DriverName = "driver2" } ,
-            new Driver { Id = 3 , DriverName = "driver3" }
+            new Driver { DriverName = "driver1" } ,
+            new Driver { DriverName = "driver2" } ,
+            new Driver { DriverName = "driver3" }
         );
         modelBuilder.Entity<Customer>().HasData(
-            new Customer { Id = 1 , CustomerName = "Customer1" } ,
-            new Customer { Id = 2 , CustomerName = "Customer2" } ,
-            new Customer { Id = 3 , CustomerName = "Customer3" }
+            new Customer { CustomerName = "Customer1" } ,
+            new Customer { CustomerName = "Customer2" } ,
+            new Customer { CustomerName = "Customer3" }
         );
     }
     public virtual DbSet<Car> Cars {get; set;}
     public virtual DbSet<Customer> Customers { get; set; }
     public virtual DbSet<Driver> Drivers { get; set; }
-    public virtual DbSet<CustomerCar> CustomerCars { get; set; }
-    public virtual DbSet<DriverCar> DriverCars { get; set; }
+    public virtual DbSet<Rental> Rentals { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => 
         optionsBuilder.UseLazyLoadingProxies();
 }
